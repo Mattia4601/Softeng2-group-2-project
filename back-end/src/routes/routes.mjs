@@ -1,5 +1,6 @@
 import express from "express"
 import { ServiceRoutes } from "./serviceRoutes.mjs";
+import { TicketRoutes } from "./ticketsRoutes.mjs";
 import morgan from 'morgan'
 const prefix = ""
 
@@ -14,11 +15,13 @@ function initRoutes(app) {
     app.use(express.urlencoded({ limit: '25mb', extended: true }));
 
     const serviceRoutes = new ServiceRoutes();
+    const ticketRoutes = new TicketRoutes();
 
     /**
-     * The routes for the services, ..., are defined here.
+     * The routes for the endpoints are defined here.
      */
     app.use(`${prefix}/services`, serviceRoutes.getRouter());
+    app.use(`${prefix}/ticket`, ticketRoutes.getRouter());
 
 }
 

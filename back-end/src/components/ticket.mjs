@@ -9,7 +9,7 @@
  * @param counter_id - The ID of the counter
  */
 class Ticket {
-    constructor(ticket_id, ticket_code, service_id, issue_time, status='WAITING', closed_time, counter_id) {
+    constructor(ticket_id, ticket_code, service_id, issue_time, status='WAITING', closed_time='', counter_id=null) {
         this.ticket_id = ticket_id;
         this.ticket_code = ticket_code;
         this.service_id = service_id;
@@ -19,3 +19,5 @@ class Ticket {
         this.counter_id = counter_id;
     }
 }
+
+export default Ticket;
