@@ -2,12 +2,11 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import initRoutes from './src/routes/routes.mjs';
+import { initWebSocket } from './src/routes/websocket.mjs';
 
 // init express
 const app = express();
 const port = 3001;
-
-
 
 // if we need to use images from the public folder
 // app.use(express.static('public'));
@@ -25,7 +24,4 @@ const corsOptions = {
 app.use(cors(corsOptions)); // to handle cross origin requests
 initRoutes(app);            // init all routes inside the routes module
 
-// activate the server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+initWebSocket(app, port);

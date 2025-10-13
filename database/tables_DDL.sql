@@ -21,10 +21,10 @@ CREATE TABLE COUNTERS (
 ----------------------------------------
 CREATE TABLE SERVICES (
     service_id          INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-    code                TEXT NOT NULL UNIQUE,
+    code                TEXT NOT NULL UNIQUE, -- e.g. "S", "A", "P" letters for services
     name                TEXT NOT NULL UNIQUE, -- e.g. "Shipping", "Account"
     description         TEXT,
-    avg_service_time    INTEGER NOT NULL      -- stored in minutes or seconds
+    avg_service_time    INTEGER NOT NULL      -- stored in minutes
 );
 
 ----------------------------------------
