@@ -3,20 +3,33 @@ import db from "./db.mjs";
 
 class TicketDAO {
     /**
-     * @returns a new ticket-code for a specific service
+     * @returns a new ticket-code string for a specific service
      */
     getNewTicketCode(serviceId) {
-        // TODO for returning a unique code
-        return 'sample-code';
+        return new Promise((resolve, reject) => {
+            // Getting the service code
+            let sql = `SELECT S.code, (COUNT(T.ticket_id) + 1) AS ticket_count
+                FROM SERVICES S
+                LEFT JOIN TICKETS T
+                ON T.service_id = S.service_id
+                AND DATE(T.issue_time) = DATE('now', 'localtime')
+                GROUP BY S.service_id, S.code
+                HAVING S.service_id = ?`;
+            
+            db.get(sql, [serviceId], (err, row) => {
+                if (err) reject(err);
+                else resolve(row.code + row.ticket_count);
+            });
+        });
     }
 
     /**
      * @returns a new ticket for the given service
      */
     getTicket(serviceId) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const issue_time = new Date().toISOString().slice(0, 19).replace("T", " "); // format YYYY-MM-DD HH:mm:ss
-            const ticket_code = this.getNewTicketCode(serviceId);
+            const ticket_code = await this.getNewTicketCode(serviceId);
 
             const sql = `INSERT INTO TICKETS (ticket_code, service_id, issue_time)
                         VALUES (?, ?, ?)`;
