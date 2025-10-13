@@ -1,4 +1,4 @@
---------- CREAZIONE TABELLE ------------
+--------- TABLES CREATION ------------
 
 PRAGMA foreign_keys = ON;
 
@@ -43,7 +43,7 @@ CREATE TABLE COUNTER_SERVICE_MAP (
 ----------------------------------------
 CREATE TABLE TICKETS (
     ticket_id       INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-    ticket_code     TEXT NOT NULL UNIQUE, -- printed on screen / for customers
+    ticket_code     TEXT NOT NULL,        -- printed on screen / for customers
     service_id      INTEGER NOT NULL,     -- references SERVICES.service_id
     issue_time      TEXT NOT NULL,        -- format YYYY-MM-DD HH:mm:ss
     status          TEXT NOT NULL DEFAULT('WAITING') 
