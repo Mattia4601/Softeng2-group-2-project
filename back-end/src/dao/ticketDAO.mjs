@@ -1,5 +1,6 @@
 import Ticket from "../components/ticket.mjs";
 import db from "./db.mjs";
+import dayjs from "dayjs";
 
 class TicketDAO {
     /**
@@ -28,7 +29,7 @@ class TicketDAO {
      */
     getTicket(serviceId) {
         return new Promise(async (resolve, reject) => {
-            const issue_time = new Date().toISOString().slice(0, 19).replace("T", " "); // format YYYY-MM-DD HH:mm:ss
+            const issue_time = dayjs().format("YYYY-MM-DD HH:mm:ss"); // format YYYY-MM-DD HH:mm:ss
             const ticket_code = await this.getNewTicketCode(serviceId);
 
             const sql = `INSERT INTO TICKETS (ticket_code, service_id, issue_time)

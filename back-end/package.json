@@ -3,16 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.mjs",
+  "type": "module",
   "scripts": {
-    "test": "echo \"No tests\"",
     "start": "node index.mjs",
-    "dev": "nodemon index.mjs"
+    "dev": "nodemon index.mjs",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "test_unit": "set NODE_ENV=test && jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testPathPattern=test_unit --testTimeout=30000",
+    "test_integration": "set NODE_ENV=test && jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testPathPattern=test_integration --testTimeout=30000",
+    "test_official": "set NODE_ENV=test && jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testPathPattern=test_official --testTimeout=30000"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^10.1.0",
     "dayjs": "^1.11.18",
     "express": "^5.1.0",
     "morgan": "^1.10.1",
@@ -20,6 +25,7 @@
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10"
   }
 }
