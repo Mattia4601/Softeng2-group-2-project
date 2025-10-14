@@ -41,6 +41,26 @@ class TicketDAO {
             });
         });
     }
+
+    /**
+     * Fucntion that changes status of a ticket from "IN PROGRESS" to "SERVED" and set closed time
+     */
+    closeTicket(ticketId) {
+        return new Promise((resolve, reject) => {
+            if (!ticketId){
+                return reject(new Error("ticketId is required!"));
+            }
+            
+            const updateQuery = `UPDATE TICKETS
+                                SET status = 'SERVED', closed_time = DATETIME('now','localtime')
+                                WHERE ticket_id = ? AND status = 'IN PROGRESS' AND closed_time IS NULL`;
+            db.run(updateQuery, ticketId, function (err) {
+                if (err)
+                    return reject(err);
+                return resolve(this.changes);  // 0 no update done, 1 updated successfully
+            });                   
+        });
+    }
 }
 
 function mapRowToTicket(row) {
