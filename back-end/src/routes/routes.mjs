@@ -1,6 +1,7 @@
 import express from "express"
 import { ServiceRoutes } from "./serviceRoutes.mjs";
 import { TicketRoutes } from "./ticketsRoutes.mjs";
+import { CounterRoutes } from "./counterRoutes.mjs";
 import morgan from 'morgan'
 const prefix = ""
 
@@ -16,13 +17,14 @@ function initRoutes(app) {
 
     const serviceRoutes = new ServiceRoutes();
     const ticketRoutes = new TicketRoutes();
+    const counterRoutes = new CounterRoutes();
 
     /**
      * The routes for the endpoints are defined here.
      */
     app.use(`${prefix}/services`, serviceRoutes.getRouter());
     app.use(`${prefix}/ticket`, ticketRoutes.getRouter());
-
+    app.use(`${prefix}/counters`, counterRoutes.getRouter());
 }
 
 export default initRoutes

@@ -47,7 +47,7 @@ CREATE TABLE TICKETS (
     service_id      INTEGER NOT NULL,     -- references SERVICES.service_id
     issue_time      TEXT NOT NULL,        -- format YYYY-MM-DD HH:mm:ss
     status          TEXT NOT NULL DEFAULT('WAITING') 
-                     CHECK(status IN ('WAITING', 'SERVED', 'CANCELLED')),
+                     CHECK(status IN ('WAITING', 'IN PROGRESS', 'SERVED', 'CANCELLED')),
     closed_time     TEXT,                -- format YYYY-MM-DD HH:mm:ss null until served or cancelled
     counter_id      INTEGER,             -- filled once served
     FOREIGN KEY (service_id) REFERENCES SERVICES(service_id),

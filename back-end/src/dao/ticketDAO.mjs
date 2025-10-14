@@ -43,6 +43,8 @@ class TicketDAO {
         });
     }
 
+    
+
     /**
      * Fucntion that changes status of a ticket from "IN PROGRESS" to "SERVED" and set closed time
      */
@@ -62,6 +64,83 @@ class TicketDAO {
             });                   
         });
     }
+
+    /**
+     * Returns the next WAITING ticket that can be served by the given counter.
+     * It uses COUNTER_SERVICE_MAP to filter tickets by the services offered at the counter
+     * and selects the one with the smallest ticket_id which it should be the one that has been
+     * waiting for the longest time.
+     * If the method finds a new ticket to assign to the counter then the method also takes care of
+     * updating the ticket status to IN PROGRESS.
+     * - input: counterId 
+     * - output: ticket_id
+     * - error: rejects on DB errors or if counterId is invalid
+     */
+    getNextWaitingTicketForCounter(counterId) {
+        return new Promise((resolve, reject) => {
+            if (counterId === undefined || counterId === null) {
+                return reject(new Error("counterId is required!"));
+            }
+            // to serialize the db operations inside this block
+            db.serialize(()=>{
+                // get exclusive lock on db to avoid race conditions on database
+                db.run("BEGIN IMMEDIATE TRANSACTION", (beginErr) => {
+                    if (beginErr) return reject(beginErr);
+
+                    const selectSql = `
+                                        SELECT T.ticket_id
+                                        FROM TICKETS T, COUNTER_SERVICE_MAP CSM 
+                                        WHERE CSM.service_id = T.service_id AND CSM.counter_id = ? AND T.status = 'WAITING'
+                                        ORDER BY T.ticket_id ASC
+                                        LIMIT 1
+                                    `;
+
+                    db.get(selectSql, [counterId], (selErr, row)=>{
+                        if (selErr) {
+                            db.run("ROLLBACK"); // to release the lock acquired with BEGIN IMMEDIATE TRANSACTION
+                            return reject(selErr);
+                            }
+                        if (!row) { // no new ticket found for the services delivered by this counter 
+                            db.run("ROLLBACK");
+                            return resolve(null);
+                        }
+
+                        // update ticket status to 'IN PROGRESS'
+                        const updateSql = `
+                                            UPDATE TICKETS
+                                            SET status = 'IN PROGRESS', counter_id = ?
+                                            WHERE ticket_id = ? AND status = 'WAITING'
+                                            `;
+                    
+                        db.run(updateSql, [counterId, row.ticket_id], function (updErr) {
+                            if (updErr) {
+                                db.run("ROLLBACK");
+                                return reject(updErr);
+                            }
+
+                            // if no rows have been updated then we just release the lock, no commit needed
+                            if (this.changes !== 1) {
+                                
+                                db.run("ROLLBACK");
+                                return resolve(null);
+                            }
+
+                            db.run("COMMIT", (commitErr) => {
+                                if (commitErr) return reject(commitErr);
+                                resolve(row.ticket_id);
+                            });
+                        
+                        });
+                    });
+                });
+
+                
+            });
+            
+        });
+    }
+
+    
 }
 
 function mapRowToTicket(row) {

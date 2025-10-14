@@ -10,9 +10,9 @@ Github repository for the group project
 
 - GET /ticket?serviceId=1 : returns ticket for specified service
 
-- GET /next-customer?counterId=1&ticketId=1 : system calls next customer
+- POST counters/:counterId/next-ticket : counter calls his next customer
 
-- POST /close-ticket : body -> ticketId and success or fail
+- POST ticket/close-ticket : body -> ticketId and success or fail
 
 - web socket: FE listenes once gotten a ticket, BE sends message containing ticket number to be called and counter
 
@@ -38,8 +38,10 @@ Github repository for the group project
 
 | actor  | action                                          |
 | ------ | ----------------------------------------------- |
-| user   | clicks button to call person                    |
-| system | BE returns the ticket and FE shows it           |
-| system | FE shows buttons cancelled or served            |
-| user   | clicks button served or cancelled BE saves data |
-| system | FE shows again call person button               |
+| system | FE shows close ticket button               |
+| counter| clicks button to close a ticket                    |
+| system | BE performs the update in the database           |
+| system | FE shows button call next customer            |
+| counter | counter clicks on button call next customer  |
+| system | FE shows again close ticket button               |
+
