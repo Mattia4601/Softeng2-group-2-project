@@ -3,6 +3,10 @@ import db from "./db.mjs";
 import dayjs from "dayjs";
 
 class TicketDAO {
+    constructor(database = null) {
+        this.db = database || db;
+    }
+
     /**
      * @returns a new ticket-code string for a specific service
      */
@@ -17,7 +21,7 @@ class TicketDAO {
                 GROUP BY S.service_id, S.code
                 HAVING S.service_id = ?`;
             
-            db.get(sql, [serviceId], (err, row) => {
+            this.db.get(sql, [serviceId], (err, row) => {
                 if (err) reject(err);
                 else resolve(row.code + row.ticket_count);
             });
@@ -34,7 +38,7 @@ class TicketDAO {
 
             const sql = `INSERT INTO TICKETS (ticket_code, service_id, issue_time)
                         VALUES (?, ?, ?)`;
-            db.run(sql, [ticket_code, serviceId, issue_time], (err) => {
+            this.db.run(sql, [ticket_code, serviceId, issue_time], function(err) {
                 if (err) reject(err);
                 else resolve(
                     new Ticket(this.lastID, ticket_code, serviceId, issue_time)
@@ -57,7 +61,7 @@ class TicketDAO {
             const updateQuery = `UPDATE TICKETS
                                 SET status = 'SERVED', closed_time = DATETIME('now','localtime')
                                 WHERE ticket_id = ? AND status = 'IN PROGRESS' AND closed_time IS NULL`;
-            db.run(updateQuery, ticketId, function (err) {
+            this.db.run(updateQuery, ticketId, function (err) {
                 if (err)
                     return reject(err);
                 return resolve(this.changes);  // 0 no update done, 1 updated successfully
@@ -82,9 +86,9 @@ class TicketDAO {
                 return reject(new Error("counterId is required!"));
             }
             // to serialize the db operations inside this block
-            db.serialize(()=>{
+            this.db.serialize(()=>{
                 // get exclusive lock on db to avoid race conditions on database
-                db.run("BEGIN IMMEDIATE TRANSACTION", (beginErr) => {
+                this.db.run("BEGIN IMMEDIATE TRANSACTION", (beginErr) => {
                     if (beginErr) return reject(beginErr);
 
                     const selectSql = `
@@ -95,13 +99,13 @@ class TicketDAO {
                                         LIMIT 1
                                     `;
 
-                    db.get(selectSql, [counterId], (selErr, row)=>{
+                    this.db.get(selectSql, [counterId], (selErr, row)=>{
                         if (selErr) {
-                            db.run("ROLLBACK"); // to release the lock acquired with BEGIN IMMEDIATE TRANSACTION
+                            this.db.run("ROLLBACK"); // to release the lock acquired with BEGIN IMMEDIATE TRANSACTION
                             return reject(selErr);
                             }
                         if (!row) { // no new ticket found for the services delivered by this counter 
-                            db.run("ROLLBACK");
+                            this.db.run("ROLLBACK");
                             return resolve(null);
                         }
 
@@ -112,20 +116,20 @@ class TicketDAO {
                                             WHERE ticket_id = ? AND status = 'WAITING'
                                             `;
                     
-                        db.run(updateSql, [counterId, row.ticket_id], function (updErr) {
+                        this.db.run(updateSql, [counterId, row.ticket_id], function (updErr) {
                             if (updErr) {
-                                db.run("ROLLBACK");
+                                this.db.run("ROLLBACK");
                                 return reject(updErr);
                             }
 
                             // if no rows have been updated then we just release the lock, no commit needed
                             if (this.changes !== 1) {
                                 
-                                db.run("ROLLBACK");
+                                this.db.run("ROLLBACK");
                                 return resolve(null);
                             }
 
-                            db.run("COMMIT", (commitErr) => {
+                            this.db.run("COMMIT", (commitErr) => {
                                 if (commitErr) return reject(commitErr);
                                 resolve(row.ticket_id);
                             });

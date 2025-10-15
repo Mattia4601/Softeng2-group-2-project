@@ -9,9 +9,9 @@ class TicketRoutes {
     /**
      * Constructs a new instance of the TicketRoutes class.
      */
-    constructor() {
+    constructor(database = null) {
         this.router = express.Router();
-        this.ticketDAO = new TicketDAO();
+        this.ticketDAO = new TicketDAO(database);
         this.initRoutes();
     }
 
