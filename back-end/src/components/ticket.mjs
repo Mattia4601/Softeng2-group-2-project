@@ -4,7 +4,7 @@
  * @param ticket_code - 
  * @param service_id - The ID of the service
  * @param issue_time - Time the ticket has been issued
- * @param status - 'WAITING', 'SERVED', 'CANCELLED'
+ * @param status - 'WAITING', 'IN PROGRESS', 'SERVED', 'CANCELLED'
  * @param closed_time - Time the ticket has been closed
  * @param counter_id - The ID of the counter
  */
