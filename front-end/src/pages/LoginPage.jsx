@@ -40,11 +40,11 @@ const LoginPage = () => {
                 localStorage.setItem('userRole', role);
                 navigate('/services');
             } else {
-                // Only call login API for counter staff
-                const response = await selectUserRole(role, selectedCounter);
+                // Store counter staff info
                 localStorage.setItem('userRole', role);
                 localStorage.setItem('counterId', selectedCounter);
-                navigate('/counter-dashboard');
+                // TODO: Replace with actual counter dashboard route once implemented
+                navigate('/counter/dashboard');
             }
         } catch (err) {
             console.error('Login error:', err);

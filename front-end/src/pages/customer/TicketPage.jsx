@@ -71,18 +71,20 @@ const TicketPage = () => {
     }, [ticketData, navigate, isCalled]);
 
     const handleClose = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/ticket/${ticketData.ticket_id}/cancel`, {
-                method: 'POST',
-            });
-            
-            if (response.ok) {
-                navigate('/');
-            } else {
-                console.error('Failed to close ticket');
+        if (window.confirm('Are you sure you want to close this ticket?')) {
+            try {
+                const response = await fetch(`http://localhost:3001/ticket/${ticketData.ticket_id}/close`, {
+                    method: 'POST',
+                });
+                
+                if (response.ok) {
+                    navigate('/services');
+                } else {
+                    console.error('Failed to close ticket');
+                }
+            } catch (error) {
+                console.error('Error closing ticket:', error);
             }
-        } catch (error) {
-            console.error('Error closing ticket:', error);
         }
     };
 
