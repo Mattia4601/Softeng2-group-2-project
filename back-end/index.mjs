@@ -24,4 +24,8 @@ const corsOptions = {
 app.use(cors(corsOptions)); // to handle cross origin requests
 initRoutes(app);            // init all routes inside the routes module
 
-initWebSocket(app, port);
+if (process.env.NODE_ENV !== 'test') {
+  initWebSocket(app, port);
+}
+
+export { app };
