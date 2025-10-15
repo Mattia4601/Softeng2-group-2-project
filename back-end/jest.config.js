@@ -69,7 +69,7 @@ const config = {
 
   // A set of global variables that need to be available in all test environments
   globals: {
-    "ts-jest": {
+    "ts-jest": { // so that jest supports import/export
       useESM: true
     }
   },

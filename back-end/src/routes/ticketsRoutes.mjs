@@ -7,7 +7,8 @@ class TicketRoutes {
     ticketDAO;
 
     /**
-     * Constructs a new instance of the TicketRoutes class.
+     * This section was added to allow the possibility of using a different db for test purpose through "new TicketRoutes(testDb)"
+     * While in production phase we use the normal db through new TicketRoutes()
      */
     constructor(database = null) {
         this.router = express.Router();
@@ -33,7 +34,13 @@ class TicketRoutes {
                         return res.status(400).json({ error: "Missing query parameter: serviceId" });
                     }
 
-                    const ticket = await this.ticketDAO.getTicket(serviceId);
+                    // coerce query param (string) to integer and validate
+                    const sid = Number(serviceId);
+                    if (!Number.isInteger(sid) || sid <= 0) {
+                        return res.status(400).json({ error: "Invalid query parameter: serviceId" });
+                    }
+
+                    const ticket = await this.ticketDAO.getTicket(sid);
                     res.status(200).json(ticket);
                 } catch (err) {
                     console.error("Error fetching ticket:", err);

@@ -3,6 +3,10 @@ import db from "./db.mjs";
 import dayjs from "dayjs";
 
 class TicketDAO {
+    /**
+     * This section was added to allow the possibility of using a different db for test purpose through "new TicketDAO(testDb)"
+     * While in production phase we use the normal db through new TicketDAO()
+     */
     constructor(database = null) {
         this.db = database || db;
     }

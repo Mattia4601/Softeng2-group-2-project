@@ -23,7 +23,7 @@ export function createTestDatabase() {
     // Create new test database
     const db = new sqlite.Database(TEST_DB_PATH, (err) => {
         if (err) throw err;
-        db.run("PRAGMA foreign_keys = ON");
+        db.run("PRAGMA foreign_keys = ON"); //enables foreign key
     });
 
     return db;
@@ -34,7 +34,7 @@ export function setupTestTables(db) {
         const ddlPath = path.join(process.cwd(), "..", "database", "tables_DDL.sql");
         const ddl = fs.readFileSync(ddlPath, "utf8");
         
-        db.exec(ddl, (err) => {
+        db.exec(ddl, (err) => { // execute the sql script in tables_DDL.sql
             if (err) reject(err);
             else resolve();
         });
@@ -46,7 +46,7 @@ export function insertTestData(db) {
         const defaultValuesPath = path.join(process.cwd(), "..", "database", "tables_default_values.sql");
         const defaultValues = fs.readFileSync(defaultValuesPath, "utf8");
         
-        db.exec(defaultValues, (err) => {
+        db.exec(defaultValues, (err) => { // execute the sql script tables_default_values.sql
             if (err) reject(err);
             else resolve();
         });
