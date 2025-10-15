@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import ServicesPage from './pages/customer/ServicesPage';
 import TicketPage from './pages/customer/TicketPage';
 import './App.css';
+import CounterPage from "./pages/CounterPage.jsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/customer/ticket" element={<TicketPage />} />
+        <Route path="/counter-dashboard" element={<CounterPage />} />
       </Routes>
     </Router>
   )

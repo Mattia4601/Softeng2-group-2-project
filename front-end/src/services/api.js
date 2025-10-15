@@ -36,3 +36,15 @@ export const closeTicket = async (ticketId) => {
     }
     return response.json();
 };
+
+export const callNextTicket = async (counterId) => {
+    const response = await fetch(`${API_URL}/counters/${counterId}/next-ticket`, {
+        method: 'POST',
+    });
+
+    // 204 = no waiting customers
+    if (response.status === 204) return null;
+
+    if (!response.ok) throw new Error('Failed to call next ticket');
+    return response.json();
+};

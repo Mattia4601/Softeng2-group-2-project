@@ -1,14 +1,18 @@
 import express from "express";
 import TicketDAO from "../dao/ticketDAO.mjs";
 import { sendWebSocketMessage } from "./websocket.mjs";
+import ServiceDAO from "../dao/serviceDAO.mjs";
+import CounterDAO from "../dao/counterDAO.mjs";
 
 class CounterRoutes {
   router;
   ticketDAO;
+  counterDAO;
 
   constructor() {
     this.router = express.Router();
     this.ticketDAO = new TicketDAO();
+    this.counterDAO = new CounterDAO;
     this.initRoutes();
   }
 
@@ -17,6 +21,16 @@ class CounterRoutes {
   }
 
   initRoutes() {
+
+    this.router.get("/", async (req, res) => {
+      try {
+        const counters = await this.counterDAO.getAllCounters();
+        return res.status(200).json(counters);
+      } catch (err) {
+        console.error("Error fetching counters:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    });
 
     /*
      * Route called when a counter clicks on button "new ticket", this will call the method

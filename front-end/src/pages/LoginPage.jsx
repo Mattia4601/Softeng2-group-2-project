@@ -10,23 +10,22 @@ const LoginPage = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadCounters = async () => {
-            try {
-                const data = await fetchCounters();
-                setCounters(data);
-            } catch (err) {
-                setError('Failed to load counters');
-            }
-        };
-        loadCounters();
-    }, []);
+    const loadCounters = async () => {
+        try {
+            const data = await fetchCounters();
+            setCounters(data);
+        } catch (err) {
+            setError('Failed to load counters');
+        }
+    };
 
     const handleRoleSelect = (selectedRole) => {
         setRole(selectedRole);
         if (selectedRole === 'customer') {
             setSelectedCounter('');
         }
+        else
+            loadCounters().then(r => {});
     };
 
     const handleSubmit = async (e) => {
@@ -97,8 +96,8 @@ const LoginPage = () => {
                                 >
                                     <option value="">Choose a counter</option>
                                     {counters.map((counter) => (
-                                        <option key={counter.counter_id} value={counter.counter_id}>
-                                            {counter.counter_name}
+                                        <option key={counter.service_id} value={counter.service_id}>
+                                            {counter.code}
                                         </option>
                                     ))}
                                 </select>
