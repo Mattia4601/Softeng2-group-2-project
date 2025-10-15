@@ -39,8 +39,6 @@ const LoginPage = () => {
                 localStorage.setItem('userRole', role);
                 navigate('/services');
             } else {
-                // Only call login API for counter staff
-                const response = await selectUserRole(role, selectedCounter);
                 localStorage.setItem('userRole', role);
                 localStorage.setItem('counterId', selectedCounter);
                 navigate('/counter-dashboard');
