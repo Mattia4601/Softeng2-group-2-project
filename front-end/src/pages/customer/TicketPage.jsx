@@ -57,7 +57,7 @@ const TicketPage = () => {
             setTimeout(() => {
                 if (ticketData && !isCalled) {
                     console.log('Attempting to reconnect...');
-                    ws.current = new WebSocket('ws://localhost:3000');
+                    ws.current = new WebSocket('ws://localhost:3001');
                 }
             }, 5000);
         };
@@ -70,23 +70,7 @@ const TicketPage = () => {
         };
     }, [ticketData, navigate, isCalled]);
 
-    const handleClose = async () => {
-        if (window.confirm('Are you sure you want to close this ticket?')) {
-            try {
-                const response = await fetch(`http://localhost:3001/ticket/${ticketData.ticket_id}/close`, {
-                    method: 'POST',
-                });
-                
-                if (response.ok) {
-                    navigate('/services');
-                } else {
-                    console.error('Failed to close ticket');
-                }
-            } catch (error) {
-                console.error('Error closing ticket:', error);
-            }
-        }
-    };
+    // No close ticket functionality needed
 
     if (!ticketData) {
         return null;
@@ -116,14 +100,12 @@ const TicketPage = () => {
                         </div>
                     )}
 
-                    <div className="mt-8">
-                        <button
-                            onClick={handleClose}
-                            className="w-full bg-red-600 text-white rounded-md py-3 px-4 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                        >
-                            Close Ticket
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => navigate('/services')}
+                        className="mt-6 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                        Return to Services
+                    </button>
                 </div>
             </div>
         </div>
