@@ -38,10 +38,9 @@ Github repository for the group project
 
 | actor  | action                                          |
 | ------ | ----------------------------------------------- |
-| system | FE shows close ticket button               |
-| counter| clicks button to close a ticket                    |
-| system | BE performs the update in the database           |
-| system | FE shows button call next customer            |
-| counter | counter clicks on button call next customer  |
-| system | FE shows again close ticket button               |
+| user   | clicks button to call person                    |
+| system | BE returns the ticket and FE shows it           |
+| system | FE shows buttons "finish" to close the ticket   |
+| user   | clicks button to saves data on BE |
+| system | FE shows again call person button               |
 
