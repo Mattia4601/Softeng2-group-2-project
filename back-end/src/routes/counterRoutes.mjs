@@ -54,13 +54,12 @@ class CounterRoutes {
             return res.status(400).json({ error: "Invalid or missing counterId" });
           }
 
-          const ticketId = await this.ticketDAO.getNextWaitingTicketForCounter(counterId);
+          const ticket = await this.ticketDAO.getNextWaitingTicketForCounter(counterId);
           // There are no people waiting for being served by this counter
-          if (ticketId === null) {
+          if (ticket === null) {
             return res.status(204).send();
           }
-
-          return res.status(200).json({ ticketId });
+          return res.status(200).json(ticket);
         }
         catch (err) {
           console.error("Error calling next ticket:", err);

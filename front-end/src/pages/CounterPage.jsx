@@ -66,7 +66,7 @@ const CounterPage = () => {
             ) : (
                 <div className="flex flex-col items-center">
                     <p className="text-lg mb-4">
-                        Serving Ticket: <strong>{ticket.ticket_number || ticket.ticket_id}</strong>
+                        Serving Ticket: <strong>{ticket.ticket_code}</strong>
                     </p>
                     <button
                         onClick={handleCloseTicket}

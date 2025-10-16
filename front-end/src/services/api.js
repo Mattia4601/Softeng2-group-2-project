@@ -46,5 +46,5 @@ export const callNextTicket = async (counterId) => {
     if (response.status === 204) return null;
 
     if (!response.ok) throw new Error('Failed to call next ticket');
-    return response.json();
+    return await response.json();
 };

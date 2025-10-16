@@ -89,27 +89,28 @@ class TicketDAO {
             if (counterId === undefined || counterId === null) {
                 return reject(new Error("counterId is required!"));
             }
+            const db = this.db;
             // to serialize the db operations inside this block
-            this.db.serialize(()=>{
+            db.serialize(()=>{
                 // get exclusive lock on db to avoid race conditions on database
-                this.db.run("BEGIN IMMEDIATE TRANSACTION", (beginErr) => {
+                db.run("BEGIN IMMEDIATE TRANSACTION", (beginErr) => {
                     if (beginErr) return reject(beginErr);
 
                     const selectSql = `
-                                        SELECT T.ticket_id
+                                        SELECT T.ticket_id, T.ticket_code
                                         FROM TICKETS T, COUNTER_SERVICE_MAP CSM 
                                         WHERE CSM.service_id = T.service_id AND CSM.counter_id = ? AND T.status = 'WAITING'
                                         ORDER BY T.ticket_id ASC
                                         LIMIT 1
                                     `;
 
-                    this.db.get(selectSql, [counterId], (selErr, row)=>{
+                    db.get(selectSql, [counterId], (selErr, row)=>{
                         if (selErr) {
-                            this.db.run("ROLLBACK"); // to release the lock acquired with BEGIN IMMEDIATE TRANSACTION
+                            db.run("ROLLBACK"); // to release the lock acquired with BEGIN IMMEDIATE TRANSACTION
                             return reject(selErr);
                             }
                         if (!row) { // no new ticket found for the services delivered by this counter 
-                            this.db.run("ROLLBACK");
+                            db.run("ROLLBACK");
                             return resolve(null);
                         }
 
@@ -120,22 +121,22 @@ class TicketDAO {
                                             WHERE ticket_id = ? AND status = 'WAITING'
                                             `;
                     
-                        this.db.run(updateSql, [counterId, row.ticket_id], function (updErr) {
+                        db.run(updateSql, [counterId, row.ticket_id], function (updErr) {
                             if (updErr) {
-                                this.db.run("ROLLBACK");
+                                db.run("ROLLBACK");
                                 return reject(updErr);
                             }
 
                             // if no rows have been updated then we just release the lock, no commit needed
                             if (this.changes !== 1) {
                                 
-                                this.db.run("ROLLBACK");
+                                db.run("ROLLBACK");
                                 return resolve(null);
                             }
 
-                            this.db.run("COMMIT", (commitErr) => {
+                            db.run("COMMIT", (commitErr) => {
                                 if (commitErr) return reject(commitErr);
-                                resolve(row.ticket_id);
+                                resolve({ ticket_id: row.ticket_id, ticket_code: row.ticket_code });
                             });
                         
                         });
