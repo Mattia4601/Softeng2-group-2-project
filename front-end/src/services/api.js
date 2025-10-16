@@ -37,6 +37,16 @@ export const closeTicket = async (ticketId) => {
     return response.json();
 };
 
+export const cancelTicket = async (ticketId) => {
+    const response = await fetch(`${API_URL}/ticket/${ticketId}/cancel`, {
+        method: 'POST'
+    });
+    if (!response.ok) {
+        throw new Error('Failed to close ticket');
+    }
+    return response.json();
+};
+
 export const callNextTicket = async (counterId) => {
     const response = await fetch(`${API_URL}/counters/${counterId}/next-ticket`, {
         method: 'POST',
