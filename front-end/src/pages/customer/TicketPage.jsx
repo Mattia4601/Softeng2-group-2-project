@@ -75,7 +75,7 @@ const TicketPage = () => {
 
     const handleClose = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/ticket/${ticketData.ticket_id}/cancel`, {
+            const response = await fetch(`http://localhost:3001/ticket/${ticketData.ticket_id}/cancel`, {
                 method: 'POST',
             });
             

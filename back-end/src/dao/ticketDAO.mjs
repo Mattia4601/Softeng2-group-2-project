@@ -74,6 +74,26 @@ class TicketDAO {
     }
 
     /**
+     * Fucntion that changes status of a ticket from "IN PROGRESS" to "CANCELLED" and set closed time
+     */
+    cancelTicket(ticketId) {
+        return new Promise((resolve, reject) => {
+            if (!ticketId){
+                return reject(new Error("ticketId is required!"));
+            }
+            
+            const updateQuery = `UPDATE TICKETS
+                                SET status = 'CANCELLED', closed_time = DATETIME('now','localtime')
+                                WHERE ticket_id = ? AND closed_time IS NULL`;
+            this.db.run(updateQuery, ticketId, function (err) {
+                if (err)
+                    return reject(err);
+                return resolve(this.changes);  // 0 no update done, 1 updated successfully
+            });                   
+        });
+    }
+
+    /**
      * Returns the next WAITING ticket that can be served by the given counter.
      * It uses COUNTER_SERVICE_MAP to filter tickets by the services offered at the counter
      * and selects the one with the smallest ticket_id which it should be the one that has been

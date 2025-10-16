@@ -47,7 +47,6 @@ class CounterRoutes {
       "/:counterId/next-ticket",
       async (req, res) => {
         try {
-        
           const counterId = Number(req.params.counterId);
 
           if (!Number.isInteger(counterId) || counterId <= 0) {
