@@ -4,11 +4,13 @@ import {callNextTicket, cancelTicket, closeTicket} from "../services/api.js";
 const CounterPage = () => {
     const counterId = localStorage.getItem('counterId');
     const [ticket, setTicket] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loadingClose, setLoadingClose] = useState(false);
+    const [loadingCancel, setLoadingCancel] = useState(false);
     const [error, setError] = useState(null);
 
     const handleCallNext = async () => {
-        setLoading(true);
+        setLoadingClose(true);
+        setLoadingCancel(true);
         setError(null);
         try {
             const nextTicket = await callNextTicket(counterId);
@@ -22,13 +24,15 @@ const CounterPage = () => {
             console.error(err);
             setError(err.message);
         } finally {
-            setLoading(false);
+            setLoadingClose(false);
+            setLoadingCancel(false);
         }
     };
 
     const handleCloseTicket = async () => {
         if (!ticket) return;
-        setLoading(true);
+        setLoadingClose(true);
+        setLoadingCancel(false);
         setError(null);
         try {
             await closeTicket(ticket.ticket_id);
@@ -38,13 +42,14 @@ const CounterPage = () => {
             console.error(err);
             setError(err.message);
         } finally {
-            setLoading(false);
+            setLoadingClose(false);
         }
     };
 
     const handleCancelTicket = async () => {
         if (!ticket) return;
-        setLoading(true);
+        setLoadingCancel(true);
+        setLoadingClose(false);
         setError(null);
         try {
             await cancelTicket(ticket.ticket_id);
@@ -54,7 +59,7 @@ const CounterPage = () => {
             console.error(err);
             setError(err.message);
         } finally {
-            setLoading(false);
+            setLoadingCancel(false);
         }
     };
 
@@ -74,10 +79,10 @@ const CounterPage = () => {
             {!ticket ? (
                 <button
                     onClick={handleCallNext}
-                    disabled={loading}
+                    disabled={loadingClose || loadingCancel}
                     className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded disabled:bg-gray-400"
                 >
-                    {loading ? 'Loading...' : 'Call Next Customer'}
+                    {(loadingClose || loadingCancel) ? 'Loading...' : 'Call Next Customer'}
                 </button>
             ) : (
                 <div className="flex flex-col items-center">
@@ -87,17 +92,17 @@ const CounterPage = () => {
                     <div className="flex gap-4">
                         <button
                             onClick={handleCloseTicket}
-                            disabled={loading}
+                            disabled={loadingClose}
                             className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded disabled:bg-gray-400"
                         >
-                            {loading ? 'Closing...' : 'Finish Ticket'}
+                            {loadingClose ? 'Closing...' : 'Finish Ticket'}
                         </button>
                         <button
                             onClick={handleCancelTicket}
-                            disabled={loading}
+                            disabled={loadingCancel}
                             className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded disabled:bg-gray-400"
                         >
-                            {loading ? 'Cancelling...' : 'Cancel Ticket'}
+                            {loadingCancel ? 'Cancelling...' : 'Cancel Ticket'}
                         </button>
                     </div>
                 </div>
