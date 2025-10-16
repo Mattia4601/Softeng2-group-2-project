@@ -1,5 +1,5 @@
 import db from "./db.mjs";
-import Service from "../components/service.mjs";
+import Counter from "../components/counter.mjs";
 
 class CounterDAO {
     /**
@@ -10,15 +10,15 @@ class CounterDAO {
             const sql = 'SELECT * FROM COUNTERS';
             db.all(sql, [], (err, rows) => {
                 if (err) reject(err);
-                else resolve(rows.map(r => mapRowToService(r)));
+                else resolve(rows.map(r => mapRowToCounter(r)));
             });
         });
     }
 }
 
-function mapRowToService(row) {
+function mapRowToCounter(row) {
     if (!row) return null; // handle nulls safely
-    return new Service(
+    return new Counter(
         row.counter_id,
         row.counter_name
     );

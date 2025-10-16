@@ -62,9 +62,12 @@ export function closeTestDatabase(db) {
     });
 }
 
-export function cleanupTestDatabase() {
+export async function cleanupTestDatabase() {
     if (fs.existsSync(TEST_DB_PATH)) {
         try {
+            if (db) {
+                await closeTestDb(); // <- close DB first
+            }
             fs.unlinkSync(TEST_DB_PATH);
         } catch (err) {
             console.warn("Could not delete test database:", err.message);

@@ -9,3 +9,4 @@ class Counter {
         this.counter_name = counter_name;
     }
 }
+export default Counter;

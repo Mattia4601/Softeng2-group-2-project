@@ -25,7 +25,7 @@ describe("Unit tests for TicketRoutes", () => {
             const response = await request(app).get(`${baseURL}/ticket?serviceId=${sampleTicket.service_id}`);
             expect(response.status).toBe(200);
             expect(TicketDAO.prototype.getTicket).toHaveBeenCalled();
-            expect(TicketDAO.prototype.getTicket).toHaveBeenCalledWith("1");
+            expect(TicketDAO.prototype.getTicket).toHaveBeenCalledWith(1);
         });
     });
 });

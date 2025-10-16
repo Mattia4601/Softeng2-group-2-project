@@ -93,9 +93,9 @@ const LoginPage = () => {
                                     required
                                 >
                                     <option value="">Choose a counter</option>
-                                    {counters.map((counter) => (
-                                        <option key={counter.service_id} value={counter.service_id}>
-                                            {counter.code}
+                                    {counters.map((c) => (
+                                        <option key={c.counter_id} value={c.counter_id}>
+                                            {c.counter_name}
                                         </option>
                                     ))}
                                 </select>

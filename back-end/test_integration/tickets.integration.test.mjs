@@ -40,8 +40,7 @@ describe('Integration Tests - GET /tickets', () => {
 
     afterAll(async () => {
         // Close DB and cleanup file
-        cleanupTestDatabase();
-        await closeTestDb();
+        await cleanupTestDatabase();
         
     });
 
