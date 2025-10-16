@@ -59,6 +59,7 @@ class CounterRoutes {
           if (ticket === null) {
             return res.status(204).send();
           }
+          sendWebSocketMessage(JSON.stringify({ type: "CALL", ticket_id: ticket.ticket_id , counterId: counterId }));
           return res.status(200).json(ticket);
         }
         catch (err) {

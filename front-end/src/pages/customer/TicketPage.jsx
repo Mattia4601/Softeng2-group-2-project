@@ -8,7 +8,7 @@ const TicketPage = () => {
     const [isCalled, setIsCalled] = useState(false);
     const [counterNumber, setCounterNumber] = useState(null);
     const ws = useRef(null);
-
+    const wsUrl = 'ws://localhost:3001';
     useEffect(() => {
         // Redirect if no ticket data
         if (!ticketData) {
@@ -17,7 +17,7 @@ const TicketPage = () => {
         }
 
         // Connect to WebSocket
-        ws.current = new WebSocket('ws://localhost:3001');
+        ws.current = new WebSocket(wsUrl);
 
         ws.current.onopen = () => {
             console.log('Connected to WebSocket server');
@@ -32,18 +32,21 @@ const TicketPage = () => {
             if (message === '✅ Connection established via WebSocket') {
                 return;
             }
+            
+            try {
+                const data = JSON.parse(message);
+                console.log("Received message:", data);
 
-            // Check if the message contains information about our ticket
-            if (message.includes(ticketData.ticket_id)) {
-                // Extract counter number if present in the message
-                const counterMatch = message.match(/counter\s*(\d+)/i);
-                if (counterMatch) {
-                    setCounterNumber(counterMatch[1]);
+                if (data.type === "CALL" && data.ticket_id === ticketData.ticket_id) {
+                    if (data.counterId) {
+                        setCounterNumber(data.counterId);
+                    }
+
+                    setIsCalled(true);
+                    new Audio('/notification.mp3').play();
                 }
-                setIsCalled(true);
-                // Play sound notification
-                const audio = new Audio('/notification.mp3');
-                audio.play();
+            } catch (err) {
+                console.log('Received message:', message);
             }
         };
 
@@ -57,7 +60,7 @@ const TicketPage = () => {
             setTimeout(() => {
                 if (ticketData && !isCalled) {
                     console.log('Attempting to reconnect...');
-                    ws.current = new WebSocket('ws://localhost:3000');
+                    ws.current = new WebSocket(wsUrl);
                 }
             }, 5000);
         };

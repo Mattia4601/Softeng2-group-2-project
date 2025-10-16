@@ -32,7 +32,7 @@ const CounterPage = () => {
         setError(null);
         try {
             await closeTicket(ticket.ticket_id);
-            alert(`Ticket ${ticket.ticket_id} closed.`);
+            alert(`Ticket ${ticket.ticket_code} closed.`);
             setTicket(null);
         } catch (err) {
             console.error(err);
