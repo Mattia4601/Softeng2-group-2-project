@@ -4,3 +4,8 @@ coverage/
 .DS_Store
 Desktop.ini
 Thumbs.db
+
+# Ignore local database files
+database/*.db
+database/*.sqlite
+database/*.db-journal
