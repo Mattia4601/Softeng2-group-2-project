@@ -1,14 +1,18 @@
 import express from "express";
 import TicketDAO from "../dao/ticketDAO.mjs";
 import { sendWebSocketMessage } from "./websocket.mjs";
+import ServiceDAO from "../dao/serviceDAO.mjs";
+import CounterDAO from "../dao/counterDAO.mjs";
 
 class CounterRoutes {
   router;
   ticketDAO;
+  counterDAO;
 
   constructor() {
     this.router = express.Router();
     this.ticketDAO = new TicketDAO();
+    this.counterDAO = new CounterDAO;
     this.initRoutes();
   }
 
@@ -17,6 +21,16 @@ class CounterRoutes {
   }
 
   initRoutes() {
+
+    this.router.get("/", async (req, res) => {
+      try {
+        const counters = await this.counterDAO.getAllCounters();
+        return res.status(200).json(counters);
+      } catch (err) {
+        console.error("Error fetching counters:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    });
 
     /*
      * Route called when a counter clicks on button "new ticket", this will call the method
@@ -40,13 +54,12 @@ class CounterRoutes {
             return res.status(400).json({ error: "Invalid or missing counterId" });
           }
 
-          const ticketId = await this.ticketDAO.getNextWaitingTicketForCounter(counterId);
+          const ticket = await this.ticketDAO.getNextWaitingTicketForCounter(counterId);
           // There are no people waiting for being served by this counter
-          if (ticketId === null) {
+          if (ticket === null) {
             return res.status(204).send();
           }
-
-          return res.status(200).json({ ticketId });
+          return res.status(200).json(ticket);
         }
         catch (err) {
           console.error("Error calling next ticket:", err);
