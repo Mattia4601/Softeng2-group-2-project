@@ -11,6 +11,9 @@ jest.mock("../../src/routes/websocket.mjs", () => ({
   sendWebSocketMessage: jest.fn(),
 }));
 
+// STATIC IMPORT of the mocked function
+import { sendWebSocketMessage } from "../../src/routes/websocket.mjs";
+
 const baseURL = "";
 let sampleTicket = new Ticket(1, "A1", 1, dayjs().format("YYYY-MM-DD HH:mm:ss"));
 let sampleCounters = [

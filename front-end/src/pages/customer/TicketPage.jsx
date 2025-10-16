@@ -80,7 +80,7 @@ const TicketPage = () => {
             });
             
             if (response.ok) {
-                navigate('/');
+                navigate('/services');
             } else {
                 console.error('Failed to close ticket');
             }
