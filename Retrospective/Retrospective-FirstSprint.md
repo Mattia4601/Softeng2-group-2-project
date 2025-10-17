@@ -100,4 +100,5 @@ $$\frac{1}{19}\sum_{i=1}^{19} \left| \frac{spent_{task_i}}{estimation_{task_i}}-
 
 - One thing you are proud of as a Team!!
 
-  > we all tried to do our part and comunicated well
+  > We all tried to do our part and comunicated well.
+  > We also managed to deliver a working piece of software for the user stories committed.
