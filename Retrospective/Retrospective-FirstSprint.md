@@ -39,15 +39,19 @@ sections:
 |            | Mean  | StDev |
 | ---------- | ----- | ----- |
 | Estimation | 2.474 | 2.26  |
-| Actual     | 2.973 |       |
+| Actual     | 2.973 | 2.90  |
 
 - Total estimation error ratio: sum of total hours spent / sum of total hours effort - 1
 
-  $$\frac{\sum_i spent_{task_i}}{\sum_i estimation_{task_i}} - 1$$
+$$\frac{\sum_i \text{spent}_{task_i}}{\sum_i \text{estimation}_{task_i}} - 1 = \frac{56.5}{47} - 1 \approx 1.202 - 1 = 0.202 = 20.2\%$$
+
+**Risultato:** L'errore totale di stima è del **20.2%**, il che significa che il lavoro effettivo ha richiesto circa il 20% in più di tempo rispetto a quanto preventivato.
 
 - Absolute relative task estimation error: sum( abs( spent-task-i / estimation-task-i - 1))/n
 
-  $$\frac{1}{n}\sum_i^n \left| \frac{spent_{task_i}}{estimation_task_i}-1 \right| $$
+$$\frac{1}{19}\sum_{i=1}^{19} \left| \frac{spent_{task_i}}{estimation_{task_i}}-1 \right| = \frac{6.12}{19} \approx 32.2\%$$
+
+**Interpretazione:** L'errore medio assoluto per singolo task è del **32.2%**, il che significa che in media ogni singola stima si è discostata dal valore effettivo di circa il 32%. Questo valore è più alto dell'errore totale (20.2%) perché alcuni errori si sono compensati (alcune stime erano troppo alte, altre troppo basse).
 
 ## QUALITY MEASURES
 
