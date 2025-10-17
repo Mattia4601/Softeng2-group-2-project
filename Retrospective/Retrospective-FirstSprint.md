@@ -36,10 +36,10 @@ sections:
 
 - Hours per task average, standard deviation (estimate and actual)
 
-|            | Mean | StDev |
-| ---------- | ---- | ----- |
-| Estimation |      |       |
-| Actual     |      |       |
+|            | Mean  | StDev |
+| ---------- | ----- | ----- |
+| Estimation | 2.474 |       |
+| Actual     | 2.973 |       |
 
 - Total estimation error ratio: sum of total hours spent / sum of total hours effort - 1
 
@@ -52,17 +52,17 @@ sections:
 ## QUALITY MEASURES
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases
-  - Coverage
+  - Total hours estimated - `6 h`
+  - Total hours spent - `5 h`
+  - Nr of automated unit test cases - `11`
+  - Coverage - `80%`
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of test cases
+  - Total hours estimated - `6 h`
+  - Total hours spent - `7.5 h`
+  - Nr of test cases - `10`
 - Code review
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated - `0 h`
+  - Total hours spent - `0 h`
 
 ## ASSESSMENT
 
@@ -96,4 +96,4 @@ sections:
 
 - One thing you are proud of as a Team!!
 
-  > we all drink water
+  > we all tried to do our part and comunicated well
