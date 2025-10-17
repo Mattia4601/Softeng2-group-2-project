@@ -38,7 +38,7 @@ sections:
 
 |            | Mean  | StDev |
 | ---------- | ----- | ----- |
-| Estimation | 2.474 |       |
+| Estimation | 2.474 | 2.26  |
 | Actual     | 2.973 |       |
 
 - Total estimation error ratio: sum of total hours spent / sum of total hours effort - 1
