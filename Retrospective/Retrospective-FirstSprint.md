@@ -28,8 +28,9 @@ sections:
 
 | Story           | # Tasks | Points | Hours est. | Hours actual |
 | --------------- | ------- | ------ | ---------- | ------------ |
-| _Uncategorized_ |         |        |            |              |
-| n               |         |        |            |              |
+| _Uncategorized_ | 9       | -      | 2d 3h 30m  | 2d 3h 55m    |
+| Get ticket      | 6       | 5      | 2d         | 2d 2h 35m    |
+| Next customer   | 4       | 8      | 1d 6h 30m  | 2d 4h 30m    |
 
 > story `Uncategorized` is for technical tasks, leave out story points (not applicable in this case)
 
@@ -67,15 +68,32 @@ sections:
 
 - What did go wrong in the sprint?
 
+  > Some tasks were not clear enough as written on youtrack creating missunderstandings
+
 - What caused your errors in estimation (if any)?
+
+  > A lack of a defined common project structure caused some missunderstanding, furthermore we did not add some extra time for unexpected errors and bug fixes
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
+  > We need to create tasks with precise definitions and fit them into an overall project structure defined earlier
+
+  > We had enough meetings to catch up with each other work and share prospective on problems, everybody pitching in with fresh ideas.d
+
 - Which improvement goals set in the previous retrospective were you able to achieve?
+
+  > /
+
 - Which ones you were not able to achieve? Why?
+
+  > /
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 
-  > Propose one or two
+  > At the beginning of the sprint and during it we should keep updating docs regarding the implementation ideas such that it can be common knowledge between team members
+
+  > Try to maximise parallelism on tasks such that nobody should wait for another person to finish its tasks creating
 
 - One thing you are proud of as a Team!!
+
+  > we all drink water
